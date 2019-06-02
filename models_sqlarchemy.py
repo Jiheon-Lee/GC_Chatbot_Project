@@ -44,8 +44,8 @@ class Cctv(Base):
     __tablename__ = 'cctv'
 
     id = Column(Integer, primary_key=True)
-    city_id = Column(Integer, ForeignKey('city.id'))
-    cityholl_id = Column(Integer, ForeignKey('cityholl.id'))
+    city_id = Column(Integer, ForeignKey('city.id'), nullable=True)
+    cityholl_id = Column(Integer, ForeignKey('cityholl.id'), nullable=True)
     road_address = Column(String(100), nullable=True)
     address = Column(String(100), nullable=True)
     purpose_id = Column(Integer, ForeignKey('purpose.id'), nullable=True)
