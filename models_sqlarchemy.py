@@ -1,3 +1,6 @@
+import os
+import json
+
 from sqlalchemy import Column, Integer, String, Table, ForeignKey, Float
 from sqlalchemy.orm import relationship
 
@@ -5,10 +8,21 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-engine = create_engine('mysql+pymysql://root:kpy680126@localhost:3306/CctvProject')
+ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+SECRET_DIR = os.path.join(ROOT_DIR, '.secrets')
+
+secrets = json.load(open(os.path.join(SECRET_DIR, "secrets.json")))
+
+
+engine = create_engine('mysql+pymysql://{}:{}@{}:{}/{}'.format(
+    secrets['RDS_USER_ID'],
+    secrets['RDS_USER_PASSWORD'],
+    secrets['RDS_USER_URL'],
+    secrets['RDS_PORT'],
+    secrets['RDS_DATABASE']
+))
 Sessoion = sessionmaker(bind=engine)
 Base = declarative_base()
-
 
 citys_cctvs_association = Table(
     'citys_cctvs', Base.metadata,
