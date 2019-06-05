@@ -1,5 +1,3 @@
-import os
-import json
 
 # telegram
 import telegram
@@ -7,13 +5,6 @@ from telegram.ext import Updater, CommandHandler
 
 # sqlalchemy
 from models_sqlarchemy import *
-
-Base = declarative_base()
-
-ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
-SECRET_DIR = os.path.join(ROOT_DIR, '.secrets')
-
-secrets = json.load(open(os.path.join(SECRET_DIR, "secrets.json")))
 
 
 class TelegramBot:
@@ -23,8 +14,8 @@ class TelegramBot:
         self.id = secrets["admin_id"]
         self.name = name
 
-    def sendMessage(self, text):
-        self.core.sendMessage(chat_id=self.id, text=text)
+    def sendMessage(self, text, parse_mode=None):
+        self.core.sendMessage(chat_id=self.id, text=text, parse_mode=parse_mode, disable_web_page_preview=False)
 
     def stop(self):
         self.updater.start_polling()
@@ -43,22 +34,22 @@ class CctvBot(TelegramBot):
         self.updater.dispatcher.add_handler(CommandHandler(cmd, func))
 
     def start(self):
-        self.sendMessage("데이터베이스에 접속중입니다.")
-        engine = create_engine("mysql+pymysql://{}:{}@{}:{}/{}".format(
-            secrets['RDS_USER_ID'],
-            secrets['RDS_USER_PASSWORD'],
-            secrets['RDS_USER_URL'],
-            secrets['RDS_PORT'],
-            secrets['RDS_DATABASE']
-        ))
-        Session = sessionmaker(bind=engine)
-        session = Session()
-        Base.metadata.create_all(engine)
-        self.sendMessage("데이터베이스 접속 성공")
-
-        cctv = session.query(Cctv).first()
-
-        self.sendMessage(cctv.city_id)
+        self.sendMessage('''명령어 목록\n
+                             - * 부분에는 구의 이름이 들어갑니다(dobong, gangseo, yangcheon)\n
+                             - 각 맵의 마커를 선택하면 주소가 나타납니다.\n
+                             /cctv_*: 전체에 대한 cctv가 담겨져있는 맵의 링크를 보여줍니다.\n
+                             /cctv_*_life: 생활방범 cctv가 담겨져있는 맵의 링크를 보여줍니다.\n
+                             /cctv_*_child: 어린이보호 cctv가 담겨져있는 맵의 링크를 보여줍니다.\n
+                             /cctv_*_traffic: 교통단속 cctv가 담겨져있는 맵의 링크를 보여줍니다.\n
+                             /cctv_*_disaster: 재난재해 cctv가 담겨져있는 맵의 링크를 보여줍니다.\n
+                             /cctv_*_car: 차량방범 cctv가 담겨져있는 맵의 링크를 보여줍니다.\n
+                             /cctv_*_garbage: 쓰레기단속 cctv가 담겨져있는 맵의 링크를 보여줍니다.\n
+                             /cctv_*_else: 기타 cctv가 담겨져있는 맵의 링크를 보여줍니다.\n
+                             /stop: 챗봇의 사용을 정지합니다.\n
+                             \n
+                             /help를 입력하면 위의 설명이 다시 나오게 됩니다.
+                             '''
+                         )
 
         self.updater.start_polling()
         self.updater.idle()
