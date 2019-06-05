@@ -61,20 +61,37 @@ def proc_study(bot, update):
     chii.sendMessage('{}야...공부좀하자....'.format(update.message['chat']['last_name']))
 
 
-def proc_command_dobong(bot, update):
+def proc_cctv_dobong(bot, update):
     session = connect_database()
-    print((update.message.text).split('_')[1])
-    dobong = session.query(Cctv).filter_by(city_id=1, purpose_id=1).all()
+    dobong = session.query(Cctv).filter_by(city_id=1).all()
     map_1 = folium.Map(location=[dobong[1].latitude, dobong[1].longitude], zoom_start=14)
-    for i in range(5):
+    for i in range(len(dobong)):
         folium.Marker([dobong[i].latitude, dobong[i].longitude], popup=dobong[i].address).add_to(map_1)
 
-    chii.sendMessage(text="<a href='{}>map</a>", parse_mode='HTML')
+    map_1.save('templates/map1.html')
+
+    chii.sendMessage("<a href='http://13.124.61.113:5000/'>MAP Link</a>", parse_mode="HTML")
 
 
+def proc_cctv_gangseo(bot, update):
+    session = connect_database()
+    gangseo = session.query(Cctv).filter_by(city_id=2).all()
+    map = folium.Map(location=[gangseo[1].latitude, gangseo[1].longitude], zoom_start=14)
+    for i in range(len(gangseo)):
+        folium.Marker([gangseo[i].latitude, gangseo[i].longitude], popup=gangseo[i].address).add_to(map)
+    map.save('templates/map1.html')
 
-def proc_cctv(bot, update):
-    chii.sendMessage("cctv를 검색합니다. 아래의 도시중에서 선택 해 주세요.\n1. 도봉구\n2. 강서구\n3. 양천구")
+    chii.sendMessage("<a href='http://13.124.61.113:5000/'>MAP Link</a>", parse_mode="HTML")
+
+def proc_cctv_yangcheon(bot, update):
+    session = connect_database()
+    yangcheon = session.query(Cctv).filter_by(city_id=3).all()
+    map = folium.Map(location=[yangcheon[1].latitude, yangcheon[1].longitude], zoom_start=14)
+    for i in range(len(yangcheon)):
+        folium.Marker([yangcheon[i].latitude, yangcheon[i].longitude], popup=yangcheon[i].address).add_to(map)
+    map.save('templates/map1.html')
+
+    chii.sendMessage("<a href='http://13.124.61.113:5000/'>MAP Link</a>", parse_mode="HTML")
 
 
 chii = CctvBot()
@@ -84,6 +101,7 @@ chii.add_handler('rolling', proc_rolling)
 chii.add_handler('stop', proc_stop)
 chii.add_handler('study', proc_study)
 chii.add_handler('help', proc_help)
-chii.add_handler('cctv', proc_cctv)
-chii.add_handler('command_dobong', proc_command_dobong)
+chii.add_handler('cctv_dobong', proc_cctv_dobong)
+chii.add_handler('cctv_gangseo', proc_cctv_gangseo)
+chii.add_handler('cctv_yancheon', proc_cctv_yangcheon)
 chii.start()
