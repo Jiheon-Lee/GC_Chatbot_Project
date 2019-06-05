@@ -5,12 +5,22 @@ from models_sqlarchemy import *
 from sqlalchemy.orm import sessionmaker
 
 from sqlalchemy import create_engine
-engine = create_engine('mysql+pymysql://root:kpy680126@localhost:3306/CctvProject')
-Base.metadata.create_all(engine)
+ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+SECRET_DIR = os.path.join(ROOT_DIR, '.secrets')
 
-# 3 - create a new session
-Session = sessionmaker(bind=engine)
-session = Session()
+secrets = json.load(open(os.path.join(SECRET_DIR, "secrets.json")))
+
+
+engine = create_engine('mysql+pymysql://{}:{}@{}:{}/{}'.format(
+    secrets['RDS_USER_ID'],
+    secrets['RDS_USER_PASSWORD'],
+    secrets['RDS_USER_URL'],
+    secrets['RDS_PORT'],
+    secrets['RDS_DATABASE']
+))
+Sessoion = sessionmaker(bind=engine)
+session = Sessoion()
+Base = declarative_base()
 
 
 data_dir = ['seoul_dobong.csv', 'seoul_gangseo.csv', 'seoul_yangcheon.csv']
