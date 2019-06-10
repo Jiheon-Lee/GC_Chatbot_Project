@@ -40,6 +40,6 @@ class CctvBot(TelegramBot):
             /cctv_*_disaster: 재난재해 cctv가 담겨져있는 맵의 링크를 보여줍니다.\n/cctv_*_car: 차량방범 cctv가 담겨져있는 맵의 링크를 보여줍니다.\n \
             /cctv_*_garbage: 쓰레기단속 cctv가 담겨져있는 맵의 링크를 보여줍니다.\n/cctv_*_else: 기타 cctv가 담겨져있는 맵의 링크를 보여줍니다.\n \
             /stop: 챗봇의 사용을 정지합니다.\n''')
-        
+
         self.updater.start_polling()
         self.updater.idle()
