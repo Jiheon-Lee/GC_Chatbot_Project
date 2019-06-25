@@ -10,3 +10,5 @@
 ### Database 설명
 - ERD
 ![pic](https://github.com/HiFaMi/GC_Chatbot_Project/blob/master/data_file/pic/ERD.png)
+- 데이터 예시
+![pic2](https://github.com/HiFaMi/GC_Chatbot_Project/blob/master/data_file/pic/data_ex.png)
