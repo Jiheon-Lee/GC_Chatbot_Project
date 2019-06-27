@@ -12,3 +12,9 @@
 ![pic](https://github.com/HiFaMi/GC_Chatbot_Project/blob/master/data_file/pic/ERD.png)
 - 데이터 예시
 ![pic2](https://github.com/HiFaMi/GC_Chatbot_Project/blob/master/data_file/pic/data_ex.png)
+
+#### Collaborators
+- 가천대학교 산업경영공학과 [이지헌](https://github.com/wlgjsdl0)
+- 가천대학교 산업경영공학과 [곽희진](https://github.com/Gwakheuijin)
+- 가천대학교 산업경영공학과 [지민영](https://github.com/JIminyoung)
+- 가천대학교 산업경영공학과 [윤셕](https://github.com/scottyoon410)
